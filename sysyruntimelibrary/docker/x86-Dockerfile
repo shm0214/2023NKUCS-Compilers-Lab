@@ -1,0 +1,10 @@
+FROM ubuntu:20.04
+
+# Install clang and gcc
+RUN apt-get update && apt-get install -y build-essential clang-10 git libantlr4-runtime-dev
+
+# Create link
+RUN ln -s /usr/bin/clang-10 /usr/bin/clang && ln -s /usr/bin/clang++-10 /usr/bin/clang++
+
+# Start from a Bash prompt
+CMD [ "/bin/bash" ]
