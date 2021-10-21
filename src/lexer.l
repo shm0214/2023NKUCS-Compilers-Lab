@@ -1,9 +1,9 @@
 %option noyywrap
 %{
     /*
-    * You will need to comment this line in lab5.
+    * You will need to uncomment this line in lab5.
     */
-    #define ONLY_FOR_LEX
+    // #define ONLY_FOR_LEX
     
     #ifdef ONLY_FOR_LEX
     #else
@@ -13,7 +13,6 @@
 
     #define YY_NO_UNPUT
     #define YY_NO_INPUT
-    #include <string>
 
     #ifdef ONLY_FOR_LEX
     #include <ostream>
@@ -135,6 +134,27 @@ WHITE [\t ]
     #endif
 }
 
+{DECIMIAL} {
+    #ifdef ONLY_FOR_LEX
+    #else
+    char *lexeme;
+    lexeme = new char[strlen(yytext) + 1];
+    strcpy(lexeme, yytext);
+    yylval = lexeme;
+    return INTEGER;
+    #endif
+}
+
+{ID} {
+    #ifdef ONLY_FOR_LEX
+    #else
+    char *lexeme;
+    lexeme = new char[strlen(yytext) + 1];
+    strcpy(lexeme, yytext);
+    yylval = lexeme;
+    return ID;
+    #endif
+}
 {EOL} yylineno++;
 {WHITE}
 %%

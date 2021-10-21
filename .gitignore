@@ -3,3 +3,4 @@ build
 lexer.cpp
 parser.cpp
 parser.h
+test/lab4/*.out
