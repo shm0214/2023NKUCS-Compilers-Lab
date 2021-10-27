@@ -1,5 +1,4 @@
 #include <iostream>
-#include <fstream>
 #include <string.h>
 #include <unistd.h>
 #include "Ast.h"
@@ -7,20 +6,29 @@ using namespace std;
 
 Ast ast;
 extern FILE *yyin;
+extern FILE *yyout;
 
 int yyparse();
 
 char outfile[256] = "a.out";
+bool dump_tokens;
+bool dump_ast;
 
 int main(int argc, char *argv[])
 {
     int opt;
-    while ((opt = getopt(argc, argv, "o:")) != -1)
+    while ((opt = getopt(argc, argv, "ato:")) != -1)
     {
         switch (opt)
         {
         case 'o':
             strcpy(outfile, optarg);
+            break;
+        case 'a':
+            dump_ast = true;
+            break;
+        case 't':
+            dump_tokens = true;
             break;
         default:
             fprintf(stderr, "Usage: %s [-o outfile] infile\n", argv[0]);
@@ -38,14 +46,13 @@ int main(int argc, char *argv[])
         fprintf(stderr, "%s: No such file or directory\nno input file\n", argv[optind]);
         exit(EXIT_FAILURE);
     }
-    ofstream fout(outfile, ios_base::out);
-    if (fout.fail())
+    if (!(yyout = fopen(outfile, "w")))
     {
         fprintf(stderr, "%s: fail to open output file\n", outfile);
         exit(EXIT_FAILURE);
     }
     yyparse();
-    ast.output(fout);
-    fout.close();
+    if(dump_ast)
+        ast.output();
     return 0;
 }

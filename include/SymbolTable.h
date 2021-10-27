@@ -78,7 +78,7 @@ private:
     // You can add any field you need here.
 
 public:
-    IdentifierSymbolEntry(Type *type, std::string name, int level);
+    IdentifierSymbolEntry(Type *type, std::string name, int scope);
     virtual ~IdentifierSymbolEntry() {};
     std::string toStr();
     int getScope() const {return scope;};
@@ -134,5 +134,6 @@ public:
 };
 
 extern SymbolTable *identifiers;
+extern SymbolTable *globals;
 
 #endif

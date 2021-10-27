@@ -13,7 +13,7 @@ private:
 public:
     Node();
     int getSeq() const {return seq;};
-    virtual void output(std::ofstream&out, int level) = 0;
+    virtual void output(int level) = 0;
 };
 
 class ExprNode : public Node
@@ -32,21 +32,21 @@ private:
 public:
     enum {ADD, SUB, AND, OR, LESS};
     BinaryExpr(SymbolEntry *se, int op, ExprNode*expr1, ExprNode*expr2) : ExprNode(se), op(op), expr1(expr1), expr2(expr2){};
-    void output(std::ofstream&out, int level);
+    void output(int level);
 };
 
 class Constant : public ExprNode
 {
 public:
     Constant(SymbolEntry *se) : ExprNode(se){};
-    void output(std::ofstream&out, int level);
+    void output(int level);
 };
 
 class Id : public ExprNode
 {
 public:
     Id(SymbolEntry *se) : ExprNode(se){};
-    void output(std::ofstream&out, int level);
+    void output(int level);
 };
 
 class StmtNode : public Node
@@ -58,7 +58,7 @@ private:
     StmtNode *stmt;
 public:
     CompoundStmt(StmtNode *stmt) : stmt(stmt) {};
-    void output(std::ofstream&out, int level);
+    void output(int level);
 };
 
 class SeqNode : public StmtNode
@@ -67,7 +67,7 @@ private:
     StmtNode *stmt1, *stmt2;
 public:
     SeqNode(StmtNode *stmt1, StmtNode *stmt2) : stmt1(stmt1), stmt2(stmt2){};
-    void output(std::ofstream&out, int level);
+    void output(int level);
 };
 
 class DeclStmt : public StmtNode
@@ -76,7 +76,7 @@ private:
     Id *id;
 public:
     DeclStmt(Id *id) : id(id){};
-    void output(std::ofstream&out, int level);
+    void output(int level);
 };
 
 class IfStmt : public StmtNode
@@ -86,7 +86,7 @@ private:
     StmtNode *thenStmt;
 public:
     IfStmt(ExprNode *cond, StmtNode *thenStmt) : cond(cond), thenStmt(thenStmt){};
-    void output(std::ofstream&out, int level);
+    void output(int level);
 };
 
 class IfElseStmt : public StmtNode
@@ -97,7 +97,7 @@ private:
     StmtNode *elseStmt;
 public:
     IfElseStmt(ExprNode *cond, StmtNode *thenStmt, StmtNode *elseStmt) : cond(cond), thenStmt(thenStmt), elseStmt(elseStmt) {};
-    void output(std::ofstream&out, int level);
+    void output(int level);
 };
 
 class ReturnStmt : public StmtNode
@@ -106,7 +106,7 @@ private:
     ExprNode *retValue;
 public:
     ReturnStmt(ExprNode*retValue) : retValue(retValue) {};
-    void output(std::ofstream&out, int level);
+    void output(int level);
 };
 
 class AssignStmt : public StmtNode
@@ -116,7 +116,7 @@ private:
     ExprNode *expr;
 public:
     AssignStmt(ExprNode *lval, ExprNode *expr) : lval(lval), expr(expr) {};
-    void output(std::ofstream&out, int level);
+    void output(int level);
 };
 
 class FunctionDef : public StmtNode
@@ -126,7 +126,7 @@ private:
     StmtNode *stmt;
 public:
     FunctionDef(SymbolEntry *se, StmtNode *stmt) : se(se), stmt(stmt){};
-    void output(std::ofstream&out, int level);
+    void output(int level);
 };
 
 class Ast
@@ -136,7 +136,7 @@ private:
 public:
     Ast() {root = nullptr;}
     void setRoot(Node*n) {root = n;}
-    void output(std::ofstream&out);
+    void output();
 };
 
 #endif

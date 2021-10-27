@@ -55,10 +55,10 @@ SymbolTable::SymbolTable(SymbolTable *prev)
 }
 
 /*
-    Description: lookup the symbol entry of an variable in the symbol table
+    Description: lookup the symbol entry of an identifier in the symbol table
     Parameters: 
-        name: variable name
-    Return: pointer to the symbol entry of the variable
+        name: identifier name
+    Return: pointer to the symbol entry of the identifier
 
     hint:
     1. The symbol table is a stack. The top of the stack contains symbol entries in the current scope.
@@ -73,12 +73,13 @@ SymbolEntry* SymbolTable::lookup(std::string name)
     return nullptr;
 }
 
-int SymbolTable::counter = 0;
-static SymbolTable t;
-SymbolTable *identifiers = &t;
-
 // install the entry into current symbol table.
 void SymbolTable::install(std::string name, SymbolEntry* entry)
 {
     symbolTable[name] = entry;
 }
+
+int SymbolTable::counter = 0;
+static SymbolTable t;
+SymbolTable *identifiers = &t;
+SymbolTable *globals = &t;

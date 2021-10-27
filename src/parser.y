@@ -1,36 +1,51 @@
-%{
+%code top{
     #include <iostream>
     #include <assert.h>
-    #include "Ast.h"
-    #include "SymbolTable.h"
-    #include "Type.h"
-    #define YYSTYPE void *
+    #include "parser.h"
     extern Ast ast;
     int yylex();
     int yyerror( char const * );
-%}
-%defines
+}
+
+%code requires {
+    #include "Ast.h"
+    #include "SymbolTable.h"
+    #include "Type.h"
+}
+
+%union {
+    int itype;
+    char* strtype;
+    StmtNode* stmttype;
+    ExprNode* exprtype;
+    Type* type;
+}
 
 %start Program
-%token ID INTEGER
+%token <strtype> ID 
+%token <itype> INTEGER
 %token IF ELSE
 %token INT VOID
 %token LPAREN RPAREN LBRACE RBRACE SEMICOLON
 %token ADD SUB OR AND LESS ASSIGN
 %token RETURN
 
+%nterm <stmttype> Stmts Stmt AssignStmt BlockStmt IfStmt ReturnStmt DeclStmt FuncDef
+%nterm <exprtype> Exp AddExp Cond LOrExp PrimaryExp LVal RelExp LAndExp
+%nterm <type> Type
+
 %precedence THEN
 %precedence ELSE
 %%
 Program
     : Stmts {
-        ast.setRoot((Node*)$1);
+        ast.setRoot($1);
     }
     ;
 Stmts
     : Stmt {$$=$1;}
     | Stmts Stmt{
-        $$ = new SeqNode((StmtNode*)$1, (StmtNode*)$2);
+        $$ = new SeqNode($1, $2);
     }
     ;
 Stmt
@@ -44,7 +59,7 @@ Stmt
 LVal
     : ID {
         SymbolEntry *se;
-        se = identifiers->lookup((char*)$1);
+        se = identifiers->lookup($1);
         if(se == nullptr)
         {
             fprintf(stderr, "identifier \"%s\" is undefined\n", (char*)$1);
@@ -52,13 +67,13 @@ LVal
             assert(se != nullptr);
         }
         $$ = new Id(se);
-        delete [](char*)$1;
+        delete []$1;
     }
     ;
 AssignStmt
     :
     LVal ASSIGN Exp SEMICOLON {
-        $$ = new AssignStmt((ExprNode*)$1, (ExprNode*)$3);
+        $$ = new AssignStmt($1, $3);
     }
     ;
 BlockStmt
@@ -66,7 +81,7 @@ BlockStmt
         {identifiers = new SymbolTable(identifiers);} 
         Stmts RBRACE 
         {
-            $$ = new CompoundStmt((StmtNode*)$3);
+            $$ = new CompoundStmt($3);
             SymbolTable *top = identifiers;
             identifiers = identifiers->getPrev();
             delete top;
@@ -74,16 +89,16 @@ BlockStmt
     ;
 IfStmt
     : IF LPAREN Cond RPAREN Stmt %prec THEN {
-        $$ = new IfStmt((ExprNode*)$3, (StmtNode*)$5);
+        $$ = new IfStmt($3, $5);
     }
     | IF LPAREN Cond RPAREN Stmt ELSE Stmt {
-        $$ = new IfElseStmt((ExprNode*)$3, (StmtNode*)$5, (StmtNode*)$7);
+        $$ = new IfElseStmt($3, $5, $7);
     }
     ;
 ReturnStmt
     :
     RETURN Exp SEMICOLON{
-        $$ = new ReturnStmt((ExprNode*)$2);
+        $$ = new ReturnStmt($2);
     }
     ;
 Exp
@@ -100,9 +115,8 @@ PrimaryExp
         $$ = $1;
     }
     | INTEGER {
-        SymbolEntry *se = new ConstantSymbolEntry(TypeSystem::intType, atoi((char*)$1));
+        SymbolEntry *se = new ConstantSymbolEntry(TypeSystem::intType, $1);
         $$ = new Constant(se);
-        delete [](char*)$1;
     }
     ;
 AddExp
@@ -112,13 +126,13 @@ AddExp
     AddExp ADD PrimaryExp
     {
         SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
-        $$ = new BinaryExpr(se, BinaryExpr::ADD, (ExprNode*)$1, (ExprNode*)$3);
+        $$ = new BinaryExpr(se, BinaryExpr::ADD, $1, $3);
     }
     |
     AddExp SUB PrimaryExp
     {
         SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
-        $$ = new BinaryExpr(se, BinaryExpr::SUB, (ExprNode*)$1, (ExprNode*)$3);
+        $$ = new BinaryExpr(se, BinaryExpr::SUB, $1, $3);
     }
     ;
 RelExp
@@ -128,7 +142,7 @@ RelExp
     RelExp LESS AddExp
     {
         SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
-        $$ = new BinaryExpr(se, BinaryExpr::LESS, (ExprNode*)$1, (ExprNode*)$3);
+        $$ = new BinaryExpr(se, BinaryExpr::LESS, $1, $3);
     }
     ;
 LAndExp
@@ -138,7 +152,7 @@ LAndExp
     LAndExp AND RelExp
     {
         SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
-        $$ = new BinaryExpr(se, BinaryExpr::AND, (ExprNode*)$1, (ExprNode*)$3);
+        $$ = new BinaryExpr(se, BinaryExpr::AND, $1, $3);
     }
     ;
 LOrExp
@@ -148,7 +162,7 @@ LOrExp
     LOrExp OR LAndExp
     {
         SymbolEntry *se = new TemporarySymbolEntry(TypeSystem::intType, SymbolTable::getLabel());
-        $$ = new BinaryExpr(se, BinaryExpr::OR, (ExprNode*)$1, (ExprNode*)$3);
+        $$ = new BinaryExpr(se, BinaryExpr::OR, $1, $3);
     }
     ;
 Type
@@ -163,30 +177,32 @@ DeclStmt
     :
     Type ID SEMICOLON {
         SymbolEntry *se;
-        se = new IdentifierSymbolEntry((Type*)$1, (char*)$2, identifiers->getLevel());
-        identifiers->install((char*)$2, se);
+        se = new IdentifierSymbolEntry($1, $2, identifiers->getLevel());
+        identifiers->install($2, se);
         $$ = new DeclStmt(new Id(se));
-        delete [](char*)$2;
+        delete []$2;
     }
     ;
 FuncDef
     :
     Type ID {
         Type *funcType;
-        funcType = new FunctionType((Type*)$1,{});
-        SymbolEntry *se = new IdentifierSymbolEntry(funcType, (char*)$2, identifiers->getLevel());
-        identifiers->install((char*)$2, se);
-        delete [](char*)$2;
-        $2 = se;
+        funcType = new FunctionType($1,{});
+        SymbolEntry *se = new IdentifierSymbolEntry(funcType, $2, identifiers->getLevel());
+        identifiers->install($2, se);
         identifiers = new SymbolTable(identifiers);
     }
     LPAREN RPAREN
     BlockStmt
     {
-        $$ = new FunctionDef((SymbolEntry*)$2, (StmtNode*)$6);
+        SymbolEntry *se;
+        se = identifiers->lookup($2);
+        assert(se != nullptr);
+        $$ = new FunctionDef(se, $6);
         SymbolTable *top = identifiers;
         identifiers = identifiers->getPrev();
         delete top;
+        delete []$2;
     }
     ;
 %%
