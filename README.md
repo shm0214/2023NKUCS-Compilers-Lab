@@ -1,9 +1,10 @@
-# 2021lab5-Skeleton
-For 2021Fall NKUCS Course - Principle of Compilers Lab5
+# 2021Fall NKUCS Course - Principle of Compilers
 
+> Lab6: Type Check & Intermediate Code Generation
+>
 > Author: Emanual20 YoungCoder
 > 
-> Date: 2021/10/27
+> Date: 2021/11/14
 
 ## 编译器命令
 ```
@@ -12,6 +13,7 @@ Options:
     -o <file>   Place the output into <file>.
     -t          Print tokens.
     -a          Print abstract syntax tree.
+    -i          Print intermediate code
 ```
 
 ## Makefile使用
@@ -43,16 +45,22 @@ TEST_PATH ?= test/level1-1
 ```
     make run
 ```
-以example.sy文件为输入，输出相应的语法树到example.ast文件中。
+以example.sy文件为输入，输出相应的中间代码到example.ast文件中。
 
 * 测试：
 ```
-    make testlab5
+    make testlab6
 ```
-该命令会默认搜索test目录下所有的.sy文件，逐个输入到编译器中，生成相应的抽象语法树.ast文件到test目录中。你还可以指定测试目录：
+该命令会默认搜索test目录下所有的.sy文件，逐个输入到编译器中，生成相应的中间代码.ll文件到test目录中。你还可以指定测试目录：
 ```
-    make testlab5 TEST_PATH=dirpath
+    make testlab6 TEST_PATH=dirpath
 ```
+
+* LLVM IR
+```
+    make llvmir
+```
+使用llvm编译器生成中间代码。
 
 * 清理:
 ```

@@ -5,3 +5,4 @@ parser.cpp
 parser.h
 *.ast
 *.toks
+*.ll

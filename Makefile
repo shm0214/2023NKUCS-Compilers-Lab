@@ -19,10 +19,12 @@ OBJ = $(SRC:$(SRC_PATH)/%.cpp=$(OBJ_PATH)/%.o)
 PARSERH ?= $(INC_PATH)/$(addsuffix .h, $(notdir $(basename $(PARSER))))
 
 TESTCASE = $(shell find $(TEST_PATH) -name "*.sy")
+LLVM_IR = $(addsuffix _std.ll, $(basename $(TESTCASE)))
 OUTPUT_LAB4 = $(addsuffix .toks, $(basename $(TESTCASE)))
 OUTPUT_LAB5 = $(addsuffix .ast, $(basename $(TESTCASE)))
+OUTPUT_LAB6 = $(addsuffix .ll, $(basename $(TESTCASE)))
 
-.phony:all app run gdb testlab4 testlab5 clean 
+.phony:all app run gdb testlab4 testlab5 testlab6 llvmir clean 
 
 all:app
 
@@ -42,7 +44,7 @@ $(BINARY):$(OBJ)
 app:$(LEXER) $(PARSER) $(BINARY)
 
 run:app
-	@$(BINARY) -o example.ast -a example.sy
+	@$(BINARY) -o example.ll -i example.sy
 
 gdb:app
 	@gdb $(BINARY)
@@ -57,9 +59,19 @@ $(TEST_PATH)/%.toks:$(TEST_PATH)/%.sy
 $(TEST_PATH)/%.ast:$(TEST_PATH)/%.sy
 	@$(BINARY) $< -o $@ -a
 
+$(TEST_PATH)/%.ll:$(TEST_PATH)/%.sy
+	@$(BINARY) $< -o $@ -i	
+
+$(TEST_PATH)/%_std.ll:$(TEST_PATH)/%.sy
+	@clang -x c $< -S -m32 -emit-llvm -o $@ 
+
+llvmir:$(LLVM_IR)
+
 testlab4:app $(OUTPUT_LAB4)
 
 testlab5:app $(OUTPUT_LAB5)
 
+testlab6:app $(OUTPUT_LAB6)
+
 clean:
-	@rm -rf $(BUILD_PATH) $(PARSER) $(LEXER) $(PARSERH) $(OUTPUT_LAB4) $(OUTPUT_LAB5) ./example.ast
+	@rm -rf $(BUILD_PATH) $(PARSER) $(LEXER) $(PARSERH) $(OUTPUT_LAB4) $(OUTPUT_LAB5) $(OUTPUT_LAB6) $(LLVM_IR) ./example.ast ./example.ll

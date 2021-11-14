@@ -5,6 +5,7 @@
 #include <map>
 
 class Type;
+class Operand;
 
 class SymbolEntry
 {
@@ -21,6 +22,7 @@ public:
     bool isTemporary() const {return kind == TEMPORARY;};
     bool isVariable() const {return kind == VARIABLE;};
     Type* getType() {return type;};
+    void setType(Type *type) {this->type = type;};
     virtual std::string toStr() = 0;
     // You can add any function you need here.
 };
@@ -75,13 +77,19 @@ private:
     enum {GLOBAL, PARAM, LOCAL};
     std::string name;
     int scope;
+    Operand *addr;  // The address of the identifier.
     // You can add any field you need here.
 
 public:
     IdentifierSymbolEntry(Type *type, std::string name, int scope);
     virtual ~IdentifierSymbolEntry() {};
     std::string toStr();
+    bool isGlobal() const {return scope == GLOBAL;};
+    bool isParam() const {return scope == PARAM;};
+    bool isLocal() const {return scope == LOCAL;};
     int getScope() const {return scope;};
+    void setAddr(Operand *addr) {this->addr = addr;};
+    Operand* getAddr() {return addr;};
     // You can add any function you need here.
 };
 
@@ -112,6 +120,7 @@ public:
     TemporarySymbolEntry(Type *type, int label);
     virtual ~TemporarySymbolEntry() {};
     std::string toStr();
+    int getLabel() const {return label;};
     // You can add any function you need here.
 };
 

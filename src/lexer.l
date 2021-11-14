@@ -57,6 +57,12 @@ WHITE [\t ]
     return RETURN;
 }
 
+"&&" {
+    if(dump_tokens)
+        DEBUG_FOR_LAB4("AND\t=");
+    return AND;
+}
+
 "=" {
     if(dump_tokens)
         DEBUG_FOR_LAB4("ASSIGN\t=");
