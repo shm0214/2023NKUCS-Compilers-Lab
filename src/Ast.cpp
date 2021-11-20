@@ -316,9 +316,8 @@ void CompoundStmt::output(int level)
 
 void SeqNode::output(int level)
 {
-    fprintf(yyout, "%*cSequence\n", level, ' ');
-    stmt1->output(level + 4);
-    stmt2->output(level + 4);
+    stmt1->output(level);
+    stmt2->output(level);
 }
 
 void DeclStmt::output(int level)

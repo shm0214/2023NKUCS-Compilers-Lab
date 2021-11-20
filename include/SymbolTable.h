@@ -86,7 +86,7 @@ public:
     std::string toStr();
     bool isGlobal() const {return scope == GLOBAL;};
     bool isParam() const {return scope == PARAM;};
-    bool isLocal() const {return scope == LOCAL;};
+    bool isLocal() const {return scope >= LOCAL;};
     int getScope() const {return scope;};
     void setAddr(Operand *addr) {this->addr = addr;};
     Operand* getAddr() {return addr;};
