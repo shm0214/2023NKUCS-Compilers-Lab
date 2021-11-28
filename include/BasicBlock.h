@@ -3,6 +3,7 @@
 #include <vector>
 #include <set>
 #include "Instruction.h"
+#include "AsmBuilder.h"
 
 class Function;
 
@@ -43,6 +44,7 @@ public:
     bb_iterator pred_end() { return pred.end(); };
     int getNumOfPred() const { return pred.size(); };
     int getNumOfSucc() const { return succ.size(); };
+    void genMachineCode(AsmBuilder*);
 };
 
 #endif

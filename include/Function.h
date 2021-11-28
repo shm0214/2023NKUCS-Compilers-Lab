@@ -8,6 +8,7 @@
 #include <iostream>
 #include "BasicBlock.h"
 #include "SymbolTable.h"
+#include "AsmBuilder.h"
 
 class Unit;
 
@@ -35,6 +36,7 @@ public:
     reverse_iterator rbegin() { return block_list.rbegin(); };
     reverse_iterator rend() { return block_list.rend(); };
     SymbolEntry *getSymPtr() { return sym_ptr; };
+    void genMachineCode(AsmBuilder*);
 };
 
 #endif

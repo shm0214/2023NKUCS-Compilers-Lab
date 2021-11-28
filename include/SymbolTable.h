@@ -115,12 +115,15 @@ public:
 class TemporarySymbolEntry : public SymbolEntry
 {
 private:
+    int stack_offset;
     int label;
 public:
     TemporarySymbolEntry(Type *type, int label);
     virtual ~TemporarySymbolEntry() {};
     std::string toStr();
     int getLabel() const {return label;};
+    void setOffset(int offset) { this->stack_offset = offset; };
+    int getOffset() { return this->stack_offset; };
     // You can add any function you need here.
 };
 

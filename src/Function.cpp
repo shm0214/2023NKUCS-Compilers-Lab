@@ -52,3 +52,27 @@ void Function::output() const
     }
     fprintf(yyout, "}\n");
 }
+
+void Function::genMachineCode(AsmBuilder* builder) 
+{
+    auto cur_unit = builder->getUnit();
+    auto cur_func = new MachineFunction(cur_unit, this->sym_ptr);
+    builder->setFunction(cur_func);
+    std::map<BasicBlock*, MachineBlock*> map;
+    for(auto block : block_list)
+    {
+        block->genMachineCode(builder);
+        map[block] = builder->getBlock();
+    }
+    // Add pred and succ for every block
+    for(auto block : block_list)
+    {
+        auto mblock = map[block];
+        for (auto pred = block->pred_begin(); pred != block->pred_end(); pred++)
+            mblock->addPred(map[*pred]);
+        for (auto succ = block->succ_begin(); succ != block->succ_end(); succ++)
+            mblock->addSucc(map[*succ]);
+    }
+    cur_unit->InsertFunc(cur_func);
+
+}
