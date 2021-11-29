@@ -6,3 +6,6 @@ parser.h
 *.ast
 *.toks
 *.ll
+*.log
+*.res
+*.bin

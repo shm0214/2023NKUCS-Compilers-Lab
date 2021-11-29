@@ -4,7 +4,7 @@
 >
 > Author: Emanual20 YoungCoder
 > 
-> Date: 2021/11/14
+> Date: 2021/11/29
 
 ## 编译器命令
 ```
@@ -55,6 +55,22 @@ TEST_PATH ?= test/level1-1
 ```
     make testlab6 TEST_PATH=dirpath
 ```
+
+* 批量测试：
+```
+    make test
+```
+对TEST_PATH目录下的每个.sy文件，编译器将其编译成中间代码.ll文件， 再使用llvm将.ll文件汇编成二进制文件后执行， 将得到的输出与标准输出对比， 验证编译器实现的正确性。错误信息描述如下：
+|  错误信息   | 描述  |
+|  ----  | ----  |
+| Compile Timeout  | 生成中间代码超时， 可能是编译器实现错误导致， 也可能是源程序过于庞大导致(可调整超时时间) |
+| Compile Error  | 编译错误， 源程序有错误或编译器实现错误 |
+|Assemble Error| 汇编错误， 编译器生成的中间代码不能由llvm正确汇编|
+| Execute Timeout  |执行超时， 可能是编译器生成了错误的中间代码|
+|Execute Error|程序运行时崩溃， 可能原因同Execute Timeout|
+|Wrong Answer|答案错误， 执行程序得到的输出与标准输出不同|
+
+具体的错误信息可在对应的.log文件中查看。
 
 * LLVM IR
 ```
