@@ -374,7 +374,7 @@ void LoadInstruction::genMachineCode(AsmBuilder* builder)
     {
         auto dst = genMachineOperand(operands[0]);
         auto internal_reg1 = genMachineVReg();
-        auto internal_reg2 = new MachineOperand(*dst);
+        auto internal_reg2 = new MachineOperand(*internal_reg1);
         auto src = genMachineOperand(operands[1]);
         // example: load r0, addr_a
         cur_inst = new LoadMInstruction(cur_block, internal_reg1, src);
