@@ -1,5 +1,5 @@
-# 2021lab5-Skeleton
-For 2021Fall NKUCS Course - Principle of Compilers Lab5
+# 2022lab5-Skeleton
+For 2022Fall NKUCS Course - Principle of Compilers Lab5
 
 > Author: Emanual20 YoungCoder
 > 
