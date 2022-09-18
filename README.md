@@ -1,5 +1,5 @@
-# 2021lab4-Skeleton
-For 2021Fall NKUCS Course - Principle of Compilers Lab4
+# 2022lab4-Skeleton
+For 2022Fall NKUCS Course - Principle of Compilers Lab4
 
 > Author: Emanual20
 > 
@@ -12,4 +12,4 @@ For 2021Fall NKUCS Course - Principle of Compilers Lab4
 
 目前只给出了lexer.l的框架，parser.y, SymbolTable.\[cpp|h\], Ast.\[cpp|h\], Type.\[cpp|h\] 在下次给出。
 
-学有余力的同学，鼓励提前找助教要后续框架代码，一次性完成语法分析，对理解该过程更具有连贯性。 
+学有余力的同学，鼓励一次性完成语法分析(框架见lab5分支)，对理解该过程更具有连贯性。 
