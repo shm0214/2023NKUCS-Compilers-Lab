@@ -1,10 +1,10 @@
-# 2021Fall NKUCS Course - Principle of Compilers
+# 2022Fall NKUCS Course - Principle of Compilers
 
 > Lab6: Type Check & Intermediate Code Generation
 >
-> Author: Emanual20 YoungCoder
+> Author: Emanual20 YoungCoder shm0214
 > 
-> Date: 2021/11/29
+> Date: 2021/11/29 2022/9/19
 
 ## 编译器命令
 ```
