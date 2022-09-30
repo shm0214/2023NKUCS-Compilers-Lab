@@ -16,6 +16,10 @@ Options:
     -i          Print intermediate code
 ```
 
+## VSCode调试
+
+提供了VSCode调试所需的json文件，使用前需正确设置launch.json中miDebuggerPath中gdb的路径。launch.json中args值即为编译器的参数，可自行调整。
+
 ## Makefile使用
 
 * 修改测试路径：
