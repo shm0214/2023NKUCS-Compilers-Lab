@@ -2,9 +2,9 @@
 
 > Lab6: Type Check & Intermediate Code Generation
 >
-> Author: Emanual20 YoungCoder shm0214
+> Author: Emanual20 YoungCoder
 > 
-> Date: 2021/11/29 2022/9/19
+> Date: 2021/11/29
 
 ## 编译器命令
 ```
