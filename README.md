@@ -1,4 +1,4 @@
-# 2021Fall NKUCS Course - Principle of Compilers
+# 2022Fall NKUCS Course - Principle of Compilers
 
 > Lab7: Machine Code Generation
 >
