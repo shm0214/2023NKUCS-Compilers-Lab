@@ -1,0 +1,34 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "makefile debug", // launch名称
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/compiler", // 调试的程序位置，是你实际makefile生成的程序
+            "args": [
+                "-o",
+                "example.s",
+                "-S",
+                "example.sy",
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}", // 当前项目的路径，即用vscode打开文件夹时的位置，需要注意。
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "build-all", // 第一次开始调试的任务，见task.json
+            "miDebuggerPath": "/usr/bin/gdb"
+        }
+    ]
+}

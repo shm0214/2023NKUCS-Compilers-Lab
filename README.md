@@ -2,9 +2,9 @@
 
 > Lab7: Machine Code Generation
 >
-> Author: Emanual20 YoungCoder feilll
+> Author: Emanual20 YoungCoder feilll shm0214
 > 
-> Date: 2021/11/28
+> Date: 2021/11/28 2022/9/30
 
 ## 编译器命令
 ```
@@ -16,6 +16,10 @@ Options:
     -i          Print intermediate code
     -S          Print assembly code
 ```
+
+## VSCode调试
+
+提供了VSCode调试所需的`json`文件，使用前需正确设置`launch.json`中`miDebuggerPath`中`gdb`的路径。`launch.json`中`args`值即为编译器的参数，可自行调整。
 
 ## Makefile使用
 
