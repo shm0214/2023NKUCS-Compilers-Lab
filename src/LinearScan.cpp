@@ -79,6 +79,48 @@ void LinearScan::computeLiveIntervals()
         Interval *interval = new Interval({du_chain.first->getParent()->getNo(), t, false, 0, 0, {du_chain.first}, du_chain.second});
         intervals.push_back(interval);
     }
+    for (auto& interval : intervals) {
+        auto uses = interval->uses;
+        auto begin = interval->start;
+        auto end = interval->end;
+        for (auto block : func->getBlocks()) {
+            auto liveIn = block->getLiveIn();
+            auto liveOut = block->getLiveOut();
+            bool in = false;
+            bool out = false;
+            for (auto use : uses)
+                if (liveIn.count(use)) {
+                    in = true;
+                    break;
+                }
+            for (auto use : uses)
+                if (liveOut.count(use)) {
+                    out = true;
+                    break;
+                }
+            if (in && out) {
+                begin = std::min(begin, (*(block->begin()))->getNo());
+                end = std::max(end, (*(block->rbegin()))->getNo());
+            } else if (!in && out) {
+                for (auto i : block->getInsts())
+                    if (i->getDef().size() > 0 &&
+                        i->getDef()[0] == *(uses.begin())) {
+                        begin = std::min(begin, i->getNo());
+                        break;
+                    }
+                end = std::max(end, (*(block->rbegin()))->getNo());
+            } else if (in && !out) {
+                begin = std::min(begin, (*(block->begin()))->getNo());
+                int temp = 0;
+                for (auto use : uses)
+                    if (use->getParent()->getParent() == block)
+                        temp = std::max(temp, use->getParent()->getNo());
+                end = std::max(temp, end);
+            }
+        }
+        interval->start = begin;
+        interval->end = end;
+    }
     bool change;
     change = true;
     while (change)
@@ -97,10 +139,16 @@ void LinearScan::computeLiveIntervals()
                     if (!temp.empty())
                     {
                         change = true;
-                        w1->defs.insert(w2->defs.begin(), w2->defs.end());
-                        w1->uses.insert(w2->uses.begin(), w2->uses.end());
-                        w1->start = std::min(w1->start, w2->start);
-                        w1->end = std::max(w1->end, w2->end);
+                        // w1->defs.insert(w2->defs.begin(), w2->defs.end());
+                        // w1->uses.insert(w2->uses.begin(), w2->uses.end());
+                        // w1->start = std::min(w1->start, w2->start);
+                        // w1->end = std::max(w1->end, w2->end);
+                        auto w1Min = std::min(w1->start, w1->end);
+                        auto w1Max = std::max(w1->start, w1->end);
+                        auto w2Min = std::min(w2->start, w2->end);
+                        auto w2Max = std::max(w2->start, w2->end);
+                        w1->start = std::min(w1Min, w2Min);
+                        w1->end = std::max(w1Max, w2Max);
                         auto it = std::find(intervals.begin(), intervals.end(), w2);
                         if (it != intervals.end())
                             intervals.erase(it);
