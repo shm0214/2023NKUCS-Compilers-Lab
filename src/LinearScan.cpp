@@ -139,8 +139,8 @@ void LinearScan::computeLiveIntervals()
                     if (!temp.empty())
                     {
                         change = true;
-                        // w1->defs.insert(w2->defs.begin(), w2->defs.end());
-                        // w1->uses.insert(w2->uses.begin(), w2->uses.end());
+                        w1->defs.insert(w2->defs.begin(), w2->defs.end());
+                        w1->uses.insert(w2->uses.begin(), w2->uses.end());
                         // w1->start = std::min(w1->start, w2->start);
                         // w1->end = std::max(w1->end, w2->end);
                         auto w1Min = std::min(w1->start, w1->end);
