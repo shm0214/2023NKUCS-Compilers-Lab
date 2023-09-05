@@ -1,15 +1,60 @@
-# 2022lab4-Skeleton
-For 2022Fall NKUCS Course - Principle of Compilers Lab4
+# 2023lab3-构造词法分析器
+For 2023Fall NKUCS Course - Principle of Compilers Lab3
 
-> Author: Emanual20
+> Author: Emanual20 YoungCoder
 > 
-> Date: 2021/10/16
+> Date: 2023/9/5
 
-目前使用方式：
+## 编译器命令
+```
+Usage：build/compiler [options] infile
+Options:
+    -o <file>   Place the output into <file>.
+    -t          Print tokens.
+```
 
-- make testlabfour: 编译lexer.l，测试test/lab4下所有sy文件。注意需要解注释ONLY_FOR_LEX宏定义，测试文件要以sy结尾。
-- make cleanlabfour: 清理编译出的二进制文件及测试结果。
+## Makefile使用
 
-目前只给出了lexer.l的框架，parser.y, SymbolTable.\[cpp|h\], Ast.\[cpp|h\], Type.\[cpp|h\] 在下次给出。
+* 修改测试路径：
 
-学有余力的同学，鼓励一次性完成语法分析(框架见lab5分支)，对理解该过程更具有连贯性。 
+默认测试路径为test，你可以修改为任意要测试的路径。我们已将最终所有测试样例分级上传。
+
+如：要测试level1-1下所有sy文件，可以将makefile中的
+
+```
+TEST_PATH ?= test
+```
+
+修改为
+
+```
+TEST_PATH ?= test/level1-1
+```
+
+* 编译：
+
+```
+    make
+```
+编译出我们的编译器。
+
+* 运行：
+```
+    make run
+```
+以example.sy文件为输入，输出相应的词法分析结果到example.toks文件中。
+
+* 测试：
+```
+    make test
+```
+该命令会默认搜索test目录下所有的.sy文件，逐个输入到编译器中，生成相应的词法分析结果.toks文件到test目录中。你还可以指定测试目录：
+```
+    make test TEST_PATH=dirpath
+```
+
+* 清理:
+```
+    make clean
+```
+清除所有可执行文件和测试输出。
