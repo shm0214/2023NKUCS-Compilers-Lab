@@ -1,12 +1,11 @@
 %option noyywrap
-%{
-    #define YY_NO_UNPUT
-    #define YY_NO_INPUT
+%option nounput
+%option noinput
+%top{
     #include <stdarg.h>
     #include "common.h"
-
-    extern FILE *yyin; 
-    extern FILE *yyout;
+}
+%{
     extern dump_type_t dump_type;
 
     inline void dump_tokens(const char* format, ...){
@@ -16,16 +15,20 @@
             vfprintf(yyout, format, args);
         va_end(args);
     }
+
+    /* Your code here, if desired (lab3). */
 %}
 
+/* definitions section */
 DECIMIAL ([1-9][0-9]*|0)
 ID [[:alpha:]_][[:alpha:][:digit:]_]*
 EOL (\r\n|\n|\r)
 WHITE [\t ]
 %x BLOCKCOMMENT
+/*  Your code here (lab3). */
 
 %%
-
+    /* rules section */
 "int" {
     dump_tokens("INT\t%s\n", yytext);
 }
@@ -87,6 +90,11 @@ WHITE [\t ]
 {ID} {
     dump_tokens("ID\t%s\n", yytext);
 }
+
 {EOL} yylineno++;
+
 {WHITE}
+
+    /*  Your code here (lab3). */
 %%
+/* user code section */
