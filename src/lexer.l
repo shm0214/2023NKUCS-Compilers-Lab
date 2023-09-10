@@ -24,7 +24,6 @@ DECIMIAL ([1-9][0-9]*|0)
 ID [[:alpha:]_][[:alpha:][:digit:]_]*
 EOL (\r\n|\n|\r)
 WHITE [\t ]
-%x BLOCKCOMMENT
 /*  Your code here (lab3). */
 
 %%
@@ -38,7 +37,7 @@ WHITE [\t ]
 }
 
 "if" {
-    dump_tokens("IF\t\n", yytext);
+    dump_tokens("IF\t%s\n", yytext);
 }
 
 "else" {
@@ -84,7 +83,7 @@ WHITE [\t ]
 {DECIMIAL} {
     int decimal;
     decimal = atoi(yytext);
-    dump_tokens("DECIMAL\t%d\n", decimal);
+    dump_tokens("DECIMAL\t%s\t%d\n", yytext, decimal);
 }
 
 {ID} {
