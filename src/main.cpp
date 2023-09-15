@@ -1,18 +1,17 @@
 #include <iostream>
 #include <string.h>
 #include <unistd.h>
+#include "common.h"
 #include "Ast.h"
-using namespace std;
 
-Ast ast;
 extern FILE *yyin;
 extern FILE *yyout;
 
 int yyparse();
 
+Ast ast;
 char outfile[256] = "a.out";
-bool dump_tokens;
-bool dump_ast;
+dump_type_t dump_type = ASM;
 
 int main(int argc, char *argv[])
 {
@@ -25,10 +24,10 @@ int main(int argc, char *argv[])
             strcpy(outfile, optarg);
             break;
         case 'a':
-            dump_ast = true;
+            dump_type = AST;
             break;
         case 't':
-            dump_tokens = true;
+            dump_type = TOKENS;
             break;
         default:
             fprintf(stderr, "Usage: %s [-o outfile] infile\n", argv[0]);
@@ -52,7 +51,7 @@ int main(int argc, char *argv[])
         exit(EXIT_FAILURE);
     }
     yyparse();
-    if(dump_ast)
+    if(dump_type == AST)
         ast.output();
     return 0;
 }

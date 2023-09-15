@@ -1,119 +1,120 @@
 %option noyywrap
-%{
-    #define YY_NO_UNPUT
-    #define YY_NO_INPUT
-
+%option nounput
+%option noinput
+%top{
+    #include <stdarg.h>
+    #include "common.h"
     #include "parser.h"
-    #include <ostream>
-    #include <fstream>
-    using namespace std;
+}
+%{
+    extern dump_type_t dump_type;
 
-    extern FILE *yyin; 
-    extern FILE *yyout;
-    extern bool dump_tokens;
-
-    void DEBUG_FOR_LAB4(std::string s){
-        std::string DEBUG_INFO = "[DEBUG LAB4]: \t" + s + "\n";
-        fputs(DEBUG_INFO.c_str(), yyout);
+    inline void dump_tokens(const char* format, ...){
+        va_list args;
+        va_start(args, format);
+        if (dump_type == TOKENS)
+            vfprintf(yyout, format, args);
+        va_end(args);
     }
+
+    /* Your code here, if desired (lab3). */
 %}
 
+/* definitions section */
 DECIMIAL ([1-9][0-9]*|0)
 ID [[:alpha:]_][[:alpha:][:digit:]_]*
 EOL (\r\n|\n|\r)
 WHITE [\t ]
-%x BLOCKCOMMENT
+/*  Your code here (lab3). */
 
 %%
-
+    /* rules section */
 "int" {
-    /*
-    * Questions: 
-    *   Q1: Why we need to return INT in further labs?
-    *   Q2: What is "INT" actually?
-    */
-    if(dump_tokens)
-        DEBUG_FOR_LAB4("INT\tint");
+    dump_tokens("INT\t%s\n", yytext);
     return INT;
 }
+
 "void" {
-    if(dump_tokens)
-        DEBUG_FOR_LAB4("VOID\tvoid");
+    dump_tokens("VOID\t%s\n", yytext);
     return VOID;
 }
+
 "if" {
-    if(dump_tokens)
-        DEBUG_FOR_LAB4("IF\tif");
+    dump_tokens("IF\t%s\n", yytext);
     return IF;
-};
+}
+
 "else" {
-    if(dump_tokens)
-        DEBUG_FOR_LAB4("ELSE\telse");
+    dump_tokens("ELSE\t%s\n", yytext);
     return ELSE;
-};
+}
+
 "return" {
-    if(dump_tokens)
-        DEBUG_FOR_LAB4("RETURN\treturn");
+    dump_tokens("RETURN\t%s\n", yytext);
     return RETURN;
 }
 
 "=" {
-    if(dump_tokens)
-        DEBUG_FOR_LAB4("ASSIGN\t=");
+    dump_tokens("ASSIGN\t%s\n", yytext);
     return ASSIGN;
 }
+
 "<" {
-    if(dump_tokens)
-        DEBUG_FOR_LAB4("LESS\t<");
+    dump_tokens("LESS\t%s\n", yytext);
     return LESS;
 }
+
 "+" {
-    if(dump_tokens)
-        DEBUG_FOR_LAB4("ADD\t+");
+    dump_tokens("ADD\t%s\n", yytext);
     return ADD;
 }
+
 ";" {
-    if(dump_tokens)
-        DEBUG_FOR_LAB4("SEMICOLON\t;");
+    dump_tokens("SEMICOLON\t%s\n", yytext);
     return SEMICOLON;
 }
+
 "(" {
-    if(dump_tokens)
-        DEBUG_FOR_LAB4("LPAREN\t(");
+    dump_tokens("LPAREN\t%s\n", yytext);
     return LPAREN;
 }
+
 ")" {
-    if(dump_tokens)
-        DEBUG_FOR_LAB4("RPAREN\t)");
+    dump_tokens("RPAREN\t%s\n", yytext);
     return RPAREN;
 }
+
 "{" {
-    if(dump_tokens)
-        DEBUG_FOR_LAB4("LBRACE\t{");
+    dump_tokens("LBRACE\t%s\n", yytext);
     return LBRACE;
 }
+
 "}" {
-    if(dump_tokens)
-        DEBUG_FOR_LAB4("RBRACE\t}");
+    dump_tokens("RBRACE\t%s\n", yytext);
     return RBRACE;
 }
 
 {DECIMIAL} {
-    if(dump_tokens)
-        DEBUG_FOR_LAB4(yytext);
-    yylval.itype = atoi(yytext);
+    int decimal;
+    decimal = atoi(yytext);
+    dump_tokens("DECIMAL\t%s\t%d\n", yytext, decimal);
+    yylval.itype = decimal;
     return INTEGER;
 }
 
 {ID} {
-    if(dump_tokens)
-        DEBUG_FOR_LAB4(yytext);
     char *lexeme;
+    dump_tokens("ID\t%s\n", yytext);
     lexeme = new char[strlen(yytext) + 1];
     strcpy(lexeme, yytext);
     yylval.strtype = lexeme;
     return ID;
 }
+
 {EOL} yylineno++;
+
 {WHITE}
+
+    /*  Your code here (lab3). */
 %%
+/* user code section */
