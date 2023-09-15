@@ -74,6 +74,7 @@ public:
     int getNo() {return no;};
     std::vector<MachineOperand*>& getDef() {return def_list;};
     std::vector<MachineOperand*>& getUse() {return use_list;};
+    MachineBlock* getParent() {return this->parent;};
 };
 
 class BinaryMInstruction : public MachineInstruction
@@ -157,6 +158,8 @@ private:
 public:
     std::vector<MachineInstruction*>& getInsts() {return inst_list;};
     std::vector<MachineInstruction*>::iterator begin() { return inst_list.begin(); };
+    std::vector<MachineInstruction*>::reverse_iterator rbegin() { return inst_list.rbegin(); };
+    std::vector<MachineInstruction*>::reverse_iterator rend() { return inst_list.rend(); };
     std::vector<MachineInstruction*>::iterator end() { return inst_list.end(); };
     MachineBlock(MachineFunction* p, int no) { this->parent = p; this->no = no; };
     void InsertInst(MachineInstruction* inst) { this->inst_list.push_back(inst); };

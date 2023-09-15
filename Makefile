@@ -8,7 +8,7 @@ SYSLIB_PATH ?= sysyruntimelibrary
 
 INC = $(addprefix -I, $(INC_PATH))
 SRC = $(shell find $(SRC_PATH)  -name "*.cpp")
-CFLAGS = -O0 -g -Wall -std=c++11 $(INC)
+CFLAGS = -O2 -g -Wall -Werror $(INC)
 FLEX ?= $(SRC_PATH)/lexer.l
 LEXER ?= $(addsuffix .cpp, $(basename $(FLEX)))
 BISON ?= $(SRC_PATH)/parser.y
@@ -22,15 +22,15 @@ TESTCASE = $(shell find $(TEST_PATH) -name "*.sy")
 TESTCASE_NUM = $(words $(TESTCASE))
 LLVM_IR = $(addsuffix _std.ll, $(basename $(TESTCASE)))
 GCC_ASM = $(addsuffix _std.s, $(basename $(TESTCASE)))
-OUTPUT_LAB4 = $(addsuffix .toks, $(basename $(TESTCASE)))
-OUTPUT_LAB5 = $(addsuffix .ast, $(basename $(TESTCASE)))
-OUTPUT_LAB6 = $(addsuffix .ll, $(basename $(TESTCASE)))
-OUTPUT_LAB7 = $(addsuffix .s, $(basename $(TESTCASE)))
+OUTPUT_LAB3 = $(addsuffix .toks, $(basename $(TESTCASE)))
+OUTPUT_LAB4 = $(addsuffix .ast, $(basename $(TESTCASE)))
+OUTPUT_LAB5 = $(addsuffix .ll, $(basename $(TESTCASE)))
+OUTPUT_LAB6 = $(addsuffix .s, $(basename $(TESTCASE)))
 OUTPUT_RES = $(addsuffix .res, $(basename $(TESTCASE)))
 OUTPUT_BIN = $(addsuffix .bin, $(basename $(TESTCASE)))
 OUTPUT_LOG = $(addsuffix .log, $(basename $(TESTCASE)))
 
-.phony:all app run gdb testlab4 testlab5 testlab6 testlab7 test clean clean-all clean-test clean-app llvmir gccasm
+.phony:all app run gdb testlab3 testlab4 testlab5 testlab6 test clean clean-all clean-test clean-app llvmir gccasm
 
 all:app
 
@@ -45,7 +45,7 @@ $(OBJ_PATH)/%.o:$(SRC_PATH)/%.cpp
 	@g++ $(CFLAGS) -c -o $@ $<
 
 $(BINARY):$(OBJ)
-	@g++ -O0 -g -o $@ $^
+	@g++ -O2 -g -o $@ $^
 
 app:$(LEXER) $(PARSER) $(BINARY)
 
@@ -82,13 +82,13 @@ llvmir:$(LLVM_IR)
 
 gccasm:$(GCC_ASM)
 
+testlab3:app $(OUTPUT_LAB3)
+
 testlab4:app $(OUTPUT_LAB4)
 
 testlab5:app $(OUTPUT_LAB5)
 
 testlab6:app $(OUTPUT_LAB6)
-
-testlab7:app $(OUTPUT_LAB7)
 
 .ONESHELL:
 test:app
@@ -149,7 +149,7 @@ clean-app:
 	@rm -rf $(BUILD_PATH) $(PARSER) $(LEXER) $(PARSERH)
 
 clean-test:
-	@rm -rf $(OUTPUT_LAB4) $(OUTPUT_LAB5) $(OUTPUT_LAB6) $(OUTPUT_LAB7) $(OUTPUT_LOG) $(OUTPUT_BIN) $(OUTPUT_RES) $(LLVM_IR) $(GCC_ASM) ./example.ast ./example.ll ./example.s
+	@rm -rf $(OUTPUT_LAB3) $(OUTPUT_LAB4) $(OUTPUT_LAB5) $(OUTPUT_LAB6) $(OUTPUT_LOG) $(OUTPUT_BIN) $(OUTPUT_RES) $(LLVM_IR) $(GCC_ASM) *.toks *.ast *.ll *.s *.out
 
 clean-all:clean-test clean-app
 

@@ -94,6 +94,9 @@ void BinaryExpr::genCode()
         case SUB:
             opcode = BinaryInstruction::SUB;
             break;
+        default:
+            opcode = -1;
+            break;
         }
         new BinaryInstruction(opcode, dst, src1, src2, bb);
     }

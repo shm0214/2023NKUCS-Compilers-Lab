@@ -1,7 +1,6 @@
-# 2022Fall NKUCS Course - Principle of Compilers
+# 2023lab6-目标代码生成
+For 2023Fall NKUCS Course - Principle of Compilers Lab6
 
-> Lab7: Machine Code Generation
->
 > Author: Emanual20 YoungCoder feilll shm0214
 > 
 > Date: 2021/11/28 2022/9/30
@@ -54,11 +53,11 @@ TEST_PATH ?= test/level1-1
 
 * 测试：
 ```
-    make testlab7
+    make testlab6
 ```
 该命令会搜索TEST_PATH目录下所有的.sy文件，逐个输入到编译器中，生成相应的汇编代码.s文件。你还可以指定测试目录：
 ```
-    make testlab7 TEST_PATH=dirpath
+    make testlab6 TEST_PATH=dirpath
 ```
 * 批量测试：
 ```

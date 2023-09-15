@@ -10,3 +10,4 @@ parser.h
 *.log
 *.bin
 *.s
+*.out
