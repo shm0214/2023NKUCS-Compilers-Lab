@@ -1,6 +1,7 @@
-# 2022Fall NKUCS Course - Principle of Compilers
+# 2023lab5-类型检查与中间代码生成
+For 2023Fall NKUCS Course - Principle of Compilers Lab5
 
-> Lab6: Type Check & Intermediate Code Generation
+> Lab5: Type Check & Intermediate Code Generation
 >
 > Author: Emanual20 YoungCoder
 > 
@@ -49,15 +50,15 @@ TEST_PATH ?= test/level1-1
 ```
     make run
 ```
-以example.sy文件为输入，输出相应的中间代码到example.ast文件中。
+以example.sy文件为输入，输出相应的中间代码到example.ll文件中。
 
 * 测试：
 ```
-    make testlab6
+    make testlab5
 ```
 该命令会默认搜索test目录下所有的.sy文件，逐个输入到编译器中，生成相应的中间代码.ll文件到test目录中。你还可以指定测试目录：
 ```
-    make testlab6 TEST_PATH=dirpath
+    make testlab5 TEST_PATH=dirpath
 ```
 
 * 批量测试：
