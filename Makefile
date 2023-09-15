@@ -12,7 +12,6 @@ CFLAGS = -O2 -g -Wall -Werror $(INC)
 FLEX ?= $(SRC_PATH)/lexer.l
 LEXER ?= $(addsuffix .cpp, $(basename $(FLEX)))
 SRC += $(LEXER)
-SRC += $(PARSER)
 OBJ = $(SRC:$(SRC_PATH)/%.cpp=$(OBJ_PATH)/%.o)
 
 TESTCASE = $(shell find $(TEST_PATH) -name "*.sy")
@@ -50,4 +49,4 @@ $(TEST_PATH)/%.toks:$(TEST_PATH)/%.sy
 test:app $(OUTPUT_LAB3)
 
 clean:
-	@rm -rf $(BUILD_PATH) $(PARSER) $(LEXER) $(PARSERH) $(OUTPUT_LAB3) ./a.out ./example.toks
+	@rm -rf $(BUILD_PATH) $(LEXER) $(OUTPUT_LAB3) *.toks *.out
