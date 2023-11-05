@@ -112,7 +112,7 @@ test:app
 			fi
 			RETURN_VALUE=$$?
 			FINAL=`tail -c 1 $${RES}`
-			[ $${FINAL} ] && echo "\n$${RETURN_VALUE}" >> $${RES} || echo "$${RETURN_VALUE}" >> $${RES}
+			[ $${FINAL} ] && echo -e "\n$${RETURN_VALUE}" >> $${RES} || echo "$${RETURN_VALUE}" >> $${RES}
 			if [ "$${RETURN_VALUE}" = "124" ]; then
 				echo -e "\033[1;31mFAIL:\033[0m $${FILE}\t\033[1;31mExecute Timeout\033[0m"
 			else if [ "$${RETURN_VALUE}" = "127" ]; then
