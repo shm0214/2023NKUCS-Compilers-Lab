@@ -65,7 +65,7 @@ bool IRComSubExprElim::globalCSE(Function *func)
     calGenKill(func);
     calInOut(func);
     result = removeGlobalCSE(func);
-    return true;
+    return result;
 }
 
 void IRComSubExprElim::calGenKill(Function *func)
@@ -115,7 +115,7 @@ void IRComSubExprElim::calGenKill(Function *func)
 void IRComSubExprElim::calInOut(Function *func)
 {
     std::set<int> U;
-    for (int i = 0; i < exprVec.size(); i++)
+    for (size_t i = 0; i < exprVec.size(); i++)
         U.insert(i);
     auto entry = func->getEntry();
     inBB[entry].clear();
