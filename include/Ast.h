@@ -17,11 +17,11 @@ private:
     static int counter;
     int seq;
 protected:
-    std::vector<Instruction*> true_list;
-    std::vector<Instruction*> false_list;
+    std::vector<BasicBlock**> true_list;
+    std::vector<BasicBlock**> false_list;
     static IRBuilder *builder;
-    void backPatch(std::vector<Instruction*> &list, BasicBlock*bb);
-    std::vector<Instruction*> merge(std::vector<Instruction*> &list1, std::vector<Instruction*> &list2);
+    void backPatch(std::vector<BasicBlock**> &list, BasicBlock*target);
+    std::vector<BasicBlock**> merge(std::vector<BasicBlock**> &list1, std::vector<BasicBlock**> &list2);
 
 public:
     Node();
@@ -30,8 +30,8 @@ public:
     virtual void output(int level) = 0;
     virtual void typeCheck() = 0;
     virtual void genCode() = 0;
-    std::vector<Instruction*>& trueList() {return true_list;}
-    std::vector<Instruction*>& falseList() {return false_list;}
+    std::vector<BasicBlock**>& trueList() {return true_list;}
+    std::vector<BasicBlock**>& falseList() {return false_list;}
 };
 
 class ExprNode : public Node

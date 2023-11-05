@@ -107,6 +107,7 @@ public:
     void setBranch(BasicBlock *);
     BasicBlock *getBranch();
     void genMachineCode(AsmBuilder*);
+    BasicBlock **patchBranch() {return &branch;};
 protected:
     BasicBlock *branch;
 };
@@ -123,6 +124,8 @@ public:
     void setFalseBranch(BasicBlock*);
     BasicBlock* getFalseBranch();
     void genMachineCode(AsmBuilder*);
+    BasicBlock **patchBranchTrue() {return &true_branch;};
+    BasicBlock **patchBranchFalse() {return &false_branch;};
 protected:
     BasicBlock* true_branch;
     BasicBlock* false_branch;
