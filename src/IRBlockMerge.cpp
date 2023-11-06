@@ -25,15 +25,21 @@ void BlockMerge::findBLocks(Function *func) {
 
         // TODO: 1. 检查块内是否存在cond指令，后继块数目是否为1 
 
-        mergeList.clear();
         BasicBlock *block = bb;
+        int succ_num = block->getNumOfSucc();
+        if(succ_num>1){
+            continue;
+        }
 
+        mergeList.clear();
+        
         // 依据控制流持续向后合并，直至存在块不可合并
         while (true) {
             // TODO: 2. 检查后继块是否可以合并，包括后继块的前驱块数目等
             bool can_merge = 0;
             // 获取block的后继块succ;
             BasicBlock* succ;
+
             if (can_merge) {
                 mergeList.push_back(succ);
                 block = succ;
@@ -60,7 +66,6 @@ void BlockMerge::merge(Function *func, BasicBlock *start) {
     
     // TODO: 1. 处理所有待合并块之间的联系，包括删除冗余的可合并块之间的跳转等；
 
-    BasicBlock *last = start;
     for (auto bb : mergeList) {
         std::vector<Instruction *> mergeInst = {};
         auto head = bb->end();
