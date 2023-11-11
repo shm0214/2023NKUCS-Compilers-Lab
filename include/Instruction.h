@@ -23,6 +23,8 @@ public:
     void setPrev(Instruction *);
     Instruction *getNext();
     Instruction *getPrev();
+    virtual Operand *getDef() { return nullptr; }
+    virtual std::vector<Operand *> getUse() { return {}; }
     virtual void output() const = 0;
     MachineOperand* genMachineOperand(Operand*);
     MachineOperand* genMachineReg(int reg);
@@ -55,6 +57,7 @@ public:
     AllocaInstruction(Operand *dst, SymbolEntry *se, BasicBlock *insert_bb = nullptr);
     ~AllocaInstruction();
     void output() const;
+    Operand *getDef() { return operands[0]; }
     void genMachineCode(AsmBuilder*);
 private:
     SymbolEntry *se;
@@ -66,6 +69,8 @@ public:
     LoadInstruction(Operand *dst, Operand *src_addr, BasicBlock *insert_bb = nullptr);
     ~LoadInstruction();
     void output() const;
+    Operand *getDef() { return operands[0]; }
+    std::vector<Operand *> getUse() { return {operands[1]}; }
     void genMachineCode(AsmBuilder*);
 };
 
@@ -75,6 +80,7 @@ public:
     StoreInstruction(Operand *dst_addr, Operand *src, BasicBlock *insert_bb = nullptr);
     ~StoreInstruction();
     void output() const;
+    std::vector<Operand *> getUse() { return {operands[0], operands[1]}; }
     void genMachineCode(AsmBuilder*);
 };
 
@@ -86,6 +92,8 @@ public:
     void output() const;
     void genMachineCode(AsmBuilder*);
     enum {SUB, ADD, AND, OR};
+    Operand *getDef() { return operands[0]; }
+    std::vector<Operand *> getUse() { return {operands[1], operands[2]}; }
 };
 
 class CmpInstruction : public Instruction
@@ -96,6 +104,8 @@ public:
     void output() const;
     void genMachineCode(AsmBuilder*);
     enum {E, NE, L, GE, G, LE};
+    Operand *getDef() { return operands[0]; }
+    std::vector<Operand *> getUse() { return {operands[1], operands[2]}; }
 };
 
 // unconditional branch
@@ -126,6 +136,7 @@ public:
     void genMachineCode(AsmBuilder*);
     BasicBlock **patchBranchTrue() {return &true_branch;};
     BasicBlock **patchBranchFalse() {return &false_branch;};
+    std::vector<Operand *> getUse() { return {operands[0]}; }
 protected:
     BasicBlock* true_branch;
     BasicBlock* false_branch;
@@ -136,6 +147,13 @@ class RetInstruction : public Instruction
 public:
     RetInstruction(Operand *src, BasicBlock *insert_bb = nullptr);
     ~RetInstruction();
+    std::vector<Operand *> getUse()
+    {
+        if (operands.size())
+            return {operands[0]};
+        else
+            return {};
+    }
     void output() const;
     void genMachineCode(AsmBuilder*);
 };

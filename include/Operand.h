@@ -23,13 +23,14 @@ public:
     void addUse(Instruction *inst) { uses.push_back(inst);};
     void removeUse(Instruction *inst);
     int usersNum() const {return uses.size();};
+    Instruction *getDef() { return def; };
+    std::vector<Instruction *> &getUse() { return uses; };
 
     use_iterator use_begin() {return uses.begin();};
     use_iterator use_end() {return uses.end();};
     Type* getType() {return se->getType();};
     std::string toStr() const;
     SymbolEntry * getEntry() { return se; };
-    Instruction* getDef() { return def; };
 };
 
 #endif

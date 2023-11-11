@@ -26,7 +26,8 @@ void Unit::genMachineCode(MachineUnit* munit)
 
 Unit::~Unit()
 {
-    for(auto &func:func_list)
+    auto delete_list = func_list;
+    for(auto &func:delete_list)
         delete func;
 }
 
