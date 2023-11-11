@@ -11,6 +11,7 @@ Usage：build/compiler [options] infile
 Options:
     -o <file>   Place the output into <file>.
     -t          Print tokens.
+    -a          Print abstract syntax tree.
 ```
 
 ## Makefile使用
