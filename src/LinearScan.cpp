@@ -162,6 +162,16 @@ void LinearScan::computeLiveIntervals()
 bool LinearScan::linearScanRegisterAllocation()
 {
     // Todo
+    /*
+        active ←{}
+        foreach live interval i, in order of increasing start point
+            ExpireOldIntervals(i)
+            if length(active) = R then
+                SpillAtInterval(i)
+            else
+                register[i] ← a register removed from pool of free registers
+                add i to active, sorted by increasing end point
+    */
 
     return true;
 }
@@ -196,11 +206,29 @@ void LinearScan::genSpillCode()
 void LinearScan::expireOldIntervals(Interval *interval)
 {
     // Todo
+    /*
+        foreach interval j in active, in order of increasing end point
+            if endpoint[j] ≥ startpoint[i] then
+                return
+            remove j from active
+            add register[j] to pool of free registers
+    */
 }
 
 void LinearScan::spillAtInterval(Interval *interval)
 {
     // Todo
+    /*
+        spill ← last interval in active
+        if endpoint[spill] > endpoint[i] then
+            register[i] ← register[spill]
+            location[spill] ← new stack location
+            remove spill from active
+            add i to active, sorted by increasing end point
+        else
+            location[i] ← new stack location
+
+    */
 }
 
 bool LinearScan::compareStart(Interval *a, Interval *b)
