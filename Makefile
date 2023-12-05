@@ -1,3 +1,4 @@
+SHELL:=/bin/bash
 SRC_PATH ?= src
 INC_PATH += include
 BUILD_PATH ?= build
