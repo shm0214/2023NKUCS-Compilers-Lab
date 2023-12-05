@@ -1,9 +1,15 @@
-# 2023lab6-目标代码生成
-For 2023Fall NKUCS Course - Principle of Compilers Lab6
+# 南开大学编译系统原理课程实验
+<a href="https://github.com/shm0214/2023NKUCS-Compilers-Lab">
+    <img alt="license" src="https://img.shields.io/github/license/shm0214/2023NKUCS-Compilers-Lab.svg"/>
+</a>
+<a href="https://github.com/shm0214/2023NKUCS-Compilers-Lab">
+    <img alt="stars" src="https://img.shields.io/github/stars/shm0214/2023NKUCS-Compilers-Lab.svg"/>
+</a>
+<a href="https://github.com/shm0214/2023NKUCS-Compilers-Lab">
+    <img alt="forks" src="https://img.shields.io/github/forks/shm0214/2023NKUCS-Compilers-Lab.svg"/>
+</a>
 
-> Author: Emanual20 YoungCoder feilll shm0214
-> 
-> Date: 2021/11/28 2022/9/30
+本项目实现一个SysY语言的编译器，包含[词法分析](https://github.com/shm0214/2023NKUCS-Compilers-Lab/tree/lab3)、[语法分析](https://github.com/shm0214/2023NKUCS-Compilers-Lab/tree/lab4)、[语义分析与中间代码生成](https://github.com/shm0214/2023NKUCS-Compilers-Lab/tree/lab5)、[目标代码生成](https://github.com/shm0214/2023NKUCS-Compilers-Lab/tree/lab6)等四次实验。你可以仅从[main分支](https://github.com/shm0214/2023NKUCS-Compilers-Lab/tree/main)开始实验，也可以从[lab3分支](https://github.com/shm0214/2023NKUCS-Compilers-Lab/tree/lab3)到[lab6分支](https://github.com/shm0214/2023NKUCS-Compilers-Lab/tree/lab6)逐步完成词法分析、语法分析、语义分析与中间代码生成、目标代码生成等实验内容，最终实现一个将SysY语言翻译到arm汇编的编译器。
 
 ## 编译器命令
 ```
