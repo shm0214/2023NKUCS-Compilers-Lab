@@ -1,12 +1,12 @@
 /* Missing return stmt */
 
-int func(int a, int b)
+int func(int x)
 {
-	int sum = a + b;
+	int twice = 2 * x;
 }
 
 int main()
 {
-	func(1,2);
+	func(42);
 	return 0;
 }
