@@ -1,4 +1,4 @@
-/* function undefinition */
+/* function undefine */
 
 int func(int a, int b, int c)
 {
