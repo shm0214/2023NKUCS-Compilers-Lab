@@ -2,7 +2,7 @@
 
 int main()
 {
-	int a = 1, b = 0;
-	int b = 1;
-	return a + b;
+	int x = 1, redef = 0;
+	int redef = 1;
+	return 0;
 }
