@@ -31,7 +31,7 @@ OUTPUT_RES = $(addsuffix .res, $(basename $(TESTCASE)))
 OUTPUT_BIN = $(addsuffix .bin, $(basename $(TESTCASE)))
 OUTPUT_LOG = $(addsuffix .log, $(basename $(TESTCASE)))
 
-.phony:all app run gdb testlab3 testlab4 testlab5 testlab6 test clean clean-all clean-test clean-app llvmir gccasm
+.phony:all app run gdb testlab3 testlab4 testlab5 testlab6 testir test clean clean-all clean-test clean-app llvmir gccasm
 
 all:app
 
